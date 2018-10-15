@@ -3,7 +3,7 @@ Description=dht exporter
 After=network.target
 
 [Service]
-ExecStart=/opt/dht_exporter/dht_exporter.py -g 4 -r 'room name'
+ExecStart=/opt/dht_exporter/dht_exporter.py -g ${GPIO_PINS} -r '${ROOMS}'
 
 [Install]
 WantedBy=default.target

@@ -44,13 +44,26 @@ export GPIO_PINS
 export ROOMS
 
 cat dht_exporter.service | envsubst > /etc/systemd/system/dht_exporter.service
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Error creating /etc/systemd/system/dht_exporter.service"
+fi
 
 mkdir -p /opt/dht_exporter
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Error creating folder /opt/dht_exporter"
+fi
+
 cp -r dht_exporter.py /opt/dht_exporter/dht_exporter.py
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Error copying to /opt/dht_exporter/dht_exporter.py"
+fi
 
 systemctl enable dht_exporter.service
 
 retVal=$?
-if [ $? -ne 0 ]; then
-    echo "Error enableing the service."
+if [ $retVal -ne 0 ]; then
+    echo "Error enabling dht_exporter.service"
 fi

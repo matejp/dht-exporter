@@ -25,6 +25,12 @@ if [ $retVal -ne 0 ]; then
     fail "Error installing Adafruit_DHT" $retVal
 fi
 
+sudo pip install paho-mqtt
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    fail "Error installing paho-mqtt" $retVal
+fi
+
 # TODO: detect python version 
 ## Python 3:
 #sudo apt-get update

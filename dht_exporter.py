@@ -36,9 +36,9 @@ def publish_to_mqtt(mqtt_client, topic, value):
     
     status = result[0]
     if status == 0:
-        print(f"Send `{value}` to topic `{topic}`")
+        print("Send {value} to topic {topic}".format(value=value, topic=topic))
     else:
-        print(f"Failed to send message to topic {topic}")
+        print("Failed to send message to topic {topic}".format(value=value, format=format))
 
 
 def get_sensor_data(gpio_pin):
@@ -60,10 +60,10 @@ def update_sensor_data(room, humidity, temperature):
     """Update sensor data"""
 
     if humidity is not None:
-        g_temperature.labels(room).set('{0:0.1f}'.format(temperature))
+        g_temperature.labels(room).set('{0:0.1f}'.format(float(temperature)))
 
     if temperature is not None:
-        g_humidity.labels(room).set('{0:0.1f}'.format(humidity))
+        g_humidity.labels(room).set('{0:0.1f}'.format(float(humidity)))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     parser.add_argument("-r", "--room", type=str, nargs='+', 
                         help="Set room name.", 
                         required=True)
-    parser.add_argument("-m", "--mqtt", type=float, default=-1, help="Send data to MQTT server at this address.")
+    parser.add_argument("-m", "--mqtt", type=str, default="", help="Send data to MQTT server at this address.")
     parser.add_argument("-mp", "--mqtt_port", type=int, default=1883, help="MQTT port")
     parser.add_argument("-t", "--topic_prefix", type=str, default="", help="Send data to this MQTT topic prefix (<prefix>-temp, <prefix>-humid).")
     cli_arguments = parser.parse_args()
@@ -93,6 +93,7 @@ if __name__ == '__main__':
     # Update temperature and humidity
     while True:
         for id, gpio_pin in enumerate(cli_arguments.gpio):
+            print(gpio_pin)
             humidity, temperature = get_sensor_data(gpio_pin)
             update_sensor_data(cli_arguments.room[id], humidity, temperature)
 
@@ -102,7 +103,7 @@ if __name__ == '__main__':
         time.sleep(cli_arguments.pull_time)
 
 
-# dht_exporter.py -p 60 -g 4 -r 'balkon' -m 192.168.178.11 -mp 1883 -t dht_sensor
+# dht_exporter.py -p 60 -g 4 -r 'balkon' -m x.y.z.w -mp 1883 -t dht_sensor
 
 # dht_sensor/balkon/temperature
 # dht_sensor/balkon/humidity

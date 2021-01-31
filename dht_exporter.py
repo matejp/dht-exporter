@@ -98,8 +98,8 @@ if __name__ == '__main__':
             update_sensor_data(cli_arguments.room[id], humidity, temperature)
 
             if cli_arguments.topic_prefix!="":
-               publish_to_mqtt(mqtt_client, "/".join((cli_arguments.topic_prefix, cli_arguments.room[id], temperature)), temperature)
-               publish_to_mqtt(mqtt_client, "/".join((cli_arguments.topic_prefix, cli_arguments.room[id], humidity,)), humidity)
+               publish_to_mqtt(mqtt_client, "/".join((cli_arguments.topic_prefix, cli_arguments.room[id], "temperature")), temperature)
+               publish_to_mqtt(mqtt_client, "/".join((cli_arguments.topic_prefix, cli_arguments.room[id], "humidity")), humidity)
         time.sleep(cli_arguments.pull_time)
 
 

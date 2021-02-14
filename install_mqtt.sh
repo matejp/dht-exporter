@@ -43,6 +43,10 @@ fi
 read -p " Enter GPIO pin number the sensor is connected to: " GPIO_PINS
 read -p " Enter room name: " ROOMS
 
+read -p " Enter MQTT server IP: " MQTT_IP
+read -p " Enter MQTT server Port: " MQTT_PORT
+read -p " Enter Prefix for MQTT subject: " MQTT_PREFIX
+
 # echo $GPIO_PINS
 # echo $ROOMS
 

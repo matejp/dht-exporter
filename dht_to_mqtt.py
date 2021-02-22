@@ -5,12 +5,7 @@ import argparse
 import random
 import time
 import Adafruit_DHT
-# from prometheus_client import start_http_server, Gauge
-import paho.mqtt.client as mqtt 
-
-# # Create a metric to track time spent and requests made.
-# g_temperature = Gauge('dht_temperature', 'Temperature in celsius provided by dht sensor or similar', ['soba'])
-# g_humidity = Gauge('dht_humidity', 'Humidity in percents provided by dht sensor or similar', ['soba'])
+import paho.mqtt.client as mqtt
 
 # generate client ID with pub prefix randomly
 # client_id = f'rpi-dht-mqtt-{random.randint(0, 1000)}'
@@ -84,8 +79,6 @@ if __name__ == '__main__':
               "\n Number of gpio pins: {g}\n Number of rooms: {r}".format(g=len(cli_arguments.gpio), r=len(cli_arguments.room)))
         exit(1)
 
-    # # Start up the server to expose the metrics.
-    # start_http_server(8001)
 
     if cli_arguments.topic_prefix!="":
         mqtt_client = connect_mqtt(cli_arguments.mqtt, cli_arguments.mqtt_port, "-".join((cli_arguments.topic_prefix, cli_arguments.room[0])))

@@ -3,7 +3,7 @@ Description=dht to MQTT
 After=network.target
 
 [Service]
-ExecStart=/opt/dht_exporter/dht_exporter.py -p ${REFRESH_EVERY_S} -g ${GPIO_PINS} -r '${ROOMS}' -m ${MQTT_IP} -mp ${MQTT_PORT} -t ${MQTT_PREFIX}
+ExecStart=/opt/dht_exporter/dht_to_mqtt.py -p ${REFRESH_EVERY_S} -g ${GPIO_PINS} -r '${ROOMS}' -m ${MQTT_IP} -mp ${MQTT_PORT} -t ${MQTT_PREFIX}
 
 [Install]
 WantedBy=default.target

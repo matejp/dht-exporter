@@ -25,12 +25,6 @@ if [ $retVal -ne 0 ]; then
     fail "Error installing Adafruit_DHT" $retVal
 fi
 
-sudo pip install paho-mqtt
-retVal=$?
-if [ $retVal -ne 0 ]; then
-    fail "Error installing paho-mqtt" $retVal
-fi
-
 # TODO: detect python version 
 ## Python 3:
 #sudo apt-get update
@@ -49,9 +43,6 @@ read -p " Enter room name: " ROOMS
 export GPIO_PINS
 export ROOMS
 export REFRESH_EVERY_S
-export MQTT_IP
-export MQTT_PORT
-export MQTT_PREFIX
 
 cat dht_exporter.service | envsubst > /etc/systemd/system/dht_exporter.service
 retVal=$?

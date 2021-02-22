@@ -57,25 +57,25 @@ export MQTT_IP
 export MQTT_PORT
 export MQTT_PREFIX
 
-cat dht_to_mqtt.service | envsubst > /etc/systemd/system/dht_to_mqtt.service
+cat dht_to_mqtt.service | envsubst | sudo tee /etc/systemd/system/dht_to_mqtt.service
 retVal=$?
 if [ $retVal -ne 0 ]; then
     echo "Error creating /etc/systemd/system/dht_to_mqtt.service"
 fi
 
-mkdir -p /opt/dht_exporter
+sudo mkdir -p /opt/dht_exporter
 retVal=$?
 if [ $retVal -ne 0 ]; then
     echo "Error creating folder /opt/dht_exporter"
 fi
 
-cp -r dht_to_mqtt.py /opt/dht_exporter/dht_to_mqtt.py
+sudo cp -r dht_to_mqtt.py /opt/dht_exporter/dht_to_mqtt.py
 retVal=$?
 if [ $retVal -ne 0 ]; then
     echo "Error copying to /opt/dht_exporter/dht_to_mqtt.py"
 fi
 
-systemctl enable dht_to_mqtt.service
+sudo systemctl enable dht_to_mqtt.service
 
 retVal=$?
 if [ $retVal -ne 0 ]; then

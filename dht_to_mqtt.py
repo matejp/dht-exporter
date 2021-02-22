@@ -51,15 +51,6 @@ def get_sensor_data(gpio_pin):
 
     return (humidity, temperature)
 
-# def update_sensor_data(room, humidity, temperature):
-#     """Update sensor data"""
-
-#     if humidity is not None:
-#         g_temperature.labels(room).set('{0:0.1f}'.format(float(temperature)))
-
-#     if temperature is not None:
-#         g_humidity.labels(room).set('{0:0.1f}'.format(float(humidity)))
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--pull_time", type=int, default=5, help="Pull sensor data every X seconds.")
@@ -89,7 +80,6 @@ if __name__ == '__main__':
         for id, gpio_pin in enumerate(cli_arguments.gpio):
             print(gpio_pin)
             humidity, temperature = get_sensor_data(gpio_pin)
-            update_sensor_data(cli_arguments.room[id], humidity, temperature)
 
             if cli_arguments.topic_prefix!="":
                publish_to_mqtt(mqtt_client, "/".join((cli_arguments.topic_prefix, cli_arguments.room[id], "temperature")), temperature)

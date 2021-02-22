@@ -82,3 +82,9 @@ retVal=$?
 if [ $retVal -ne 0 ]; then
     echo "Error enabling dht_to_mqtt.service"
 fi
+
+sudo systemctl start dht_to_mqtt.service
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Error starting dht_to_mqtt.service"
+fi

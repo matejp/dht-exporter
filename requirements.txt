@@ -1,4 +1,5 @@
 pre-commit
-Adafruit_DHT
+# Adafruit_DHT deprecated
+adafruit-circuitpython-dht
 # prometheus_client
-paho
+paho-mqtt

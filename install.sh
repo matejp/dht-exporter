@@ -39,7 +39,7 @@ done
 read -p " Enter exporter port name [8001]: " PORT
 PORT=${PORT:-8001}
 
-# Check if port is in use
+# Check if port is in use (Bash natively supports tcp connections as file descriptors: https://tldp.org/LDP/abs/html/devref1.html)
 exec 6<>/dev/tcp/127.0.0.1/$PORT || echo "No one is listening on port $PORT!"
 exec 6>&- # close output connection
 exec 6<&- # close input connection

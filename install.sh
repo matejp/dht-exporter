@@ -5,44 +5,53 @@ fail () {
     exit $2
 }
 
-## Python 2:
 sudo apt-get update
-sudo apt-get install python-pip python-prometheus-client
 retVal=$?
 if [ $retVal -ne 0 ]; then
-    fail "Error installing python-pip python-prometheus-client" $retVal
+    fail "Error running: sudo apt-get update" $retVal
 fi
 
-sudo python -m pip install --upgrade pip setuptools wheel
+sudo apt install python3-pip libgpiod2
 retVal=$?
 if [ $retVal -ne 0 ]; then
     fail "Error installing setuptools wheel" $retVal
 fi
 
-sudo pip install Adafruit_DHT
+sudo python3 -m pip install --upgrade pip setuptools wheel
 retVal=$?
 if [ $retVal -ne 0 ]; then
-    fail "Error installing Adafruit_DHT" $retVal
+    fail "Error installing setuptools wheel" $retVal
 fi
 
-# TODO: detect python version 
-## Python 3:
-#sudo apt-get update
-#sudo apt-get install python3-pip python3-prometheus-client
-#sudo python3 -m pip install --upgrade pip setuptools wheel
-#sudo pip3 install Adafruit_DHT
+sudo python3 -m pip install -r requirements.txt
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    fail "Error running: pip3 install -r requirements.txt" $retVal
+fi
+
+read -p " Enter GPIO pin number the sensor is connected to [4]: " GPIO_PINS
+GPIO_PINS=${GPIO_PINS:-4}
+
+while [ -z "$ROOMS" ]; do
+    read -p " Enter room name: " ROOMS
+done
+
+read -p " Enter exporter port name [8001]: " PORT
+PORT=${PORT:-8001}
+
+# Check if port is in use
+exec 6<>/dev/tcp/127.0.0.1/$PORT || echo "No one is listening on port $PORT!"
+exec 6>&- # close output connection
+exec 6<&- # close input connection
 
 
-
-read -p " Enter GPIO pin number the sensor is connected to: " GPIO_PINS
-read -p " Enter room name: " ROOMS
-
-# echo $GPIO_PINS
-# echo $ROOMS
+read -p " Pull sensor data every X seconds [20]: " PULLTIME
+PULLTIME=${PULLTIME:-20}
 
 export GPIO_PINS
 export ROOMS
-export REFRESH_EVERY_S
+export PORT
+export PULLTIME
 
 cat dht_exporter.service | envsubst | sudo tee /etc/systemd/system/dht_exporter.service
 retVal=$?
@@ -63,8 +72,13 @@ if [ $retVal -ne 0 ]; then
 fi
 
 sudo systemctl enable dht_exporter.service
-
 retVal=$?
 if [ $retVal -ne 0 ]; then
     echo "Error enabling dht_exporter.service"
+fi
+
+sudo systemctl start dht_exporter.service
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Error starting dht_exporter.service"
 fi

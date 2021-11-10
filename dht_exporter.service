@@ -3,7 +3,7 @@ Description=dht exporter
 After=network.target
 
 [Service]
-ExecStart=/opt/dht_exporter/dht_exporter.py -g ${GPIO_PINS} -r '${ROOMS}'
+ExecStart=/opt/dht_exporter/dht_exporter.py --gpio ${GPIO_PINS} --room '${ROOMS}' --pull_time ${PULLTIME} --port ${PORT}
 
 [Install]
 WantedBy=default.target

@@ -1,5 +1,6 @@
 pre-commit
+pytest
 # Adafruit_DHT deprecated
+adafruit-blinka
 adafruit-circuitpython-dht
-# prometheus_client
-paho-mqtt
+prometheus_client
